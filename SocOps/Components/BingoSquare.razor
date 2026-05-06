@@ -6,10 +6,16 @@
     class="@GetCssClasses()"
     aria-pressed="@Square.IsMarked"
     aria-label="@(Square.IsFreeSpace ? "Free space" : Square.Text)">
-    <span class="wrap-break-word hyphens-auto">@Square.Text</span>
+    <span class="wrap-break-word hyphens-auto uppercase tracking-wide">@Square.Text</span>
     @if (Square.IsMarked && !Square.IsFreeSpace)
     {
-        <span class="absolute top-0.5 right-0.5 text-green-600 text-xs">✓</span>
+        <span class="absolute top-2 right-2 text-white text-xl font-bold" style="font-family: var(--font-heading);">✕</span>
+    }
+    @if (Square.IsFreeSpace)
+    {
+        <span class="absolute inset-0 flex items-center justify-center opacity-20">
+            <div class="w-8 h-8 border-3 border-black rounded-none" style="transform: rotate(45deg);"></div>
+        </span>
     }
 </button>
 
@@ -25,15 +31,15 @@
 
     private string GetCssClasses()
     {
-        var baseClasses = "relative flex items-center justify-center p-1 text-center border border-gray-300 rounded transition-all duration-150 select-none min-h-[60px] text-xs leading-tight";
+        var baseClasses = "relative flex items-center justify-center p-2 text-center border-3 select-none min-h-[60px] text-xs leading-tight rounded-none uppercase font-bold transition-all duration-100";
 
         var stateClasses = Square.IsMarked
             ? IsWinning
-                ? "bg-amber-200 border-amber-400 text-amber-900"
-                : "bg-marked border-marked-border text-green-800"
-            : "bg-white text-gray-700 active:bg-gray-100";
+                ? "bg-yellow text-black border-black animate-stamp"
+                : "bg-red text-white border-white"
+            : "bg-white text-black border-black active:bg-gray-100";
 
-        var freeSpaceClasses = Square.IsFreeSpace ? "font-bold text-sm" : "";
+        var freeSpaceClasses = Square.IsFreeSpace ? "font-bold cursor-default opacity-90" : "hover:translate-x-0.5 hover:-translate-y-0.5";
 
         return $"{baseClasses} {stateClasses} {freeSpaceClasses}";
     }

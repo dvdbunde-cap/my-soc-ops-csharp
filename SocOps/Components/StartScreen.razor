@@ -1,21 +1,47 @@
-<div class="flex flex-col items-center justify-center min-h-full p-6 bg-gray-50">
-    <div class="text-center max-w-sm">
-        <h1 class="text-4xl font-bold text-gray-900 mb-2">Soc Ops</h1>
-        <p class="text-lg text-gray-600 mb-8">Social Bingo</p>
+<div class="flex flex-col items-center justify-center min-h-full p-6 bg-white relative overflow-hidden">
+    <!-- Geometric decorations -->
+    <div class="geo-circle" style="top: 10%; left: 5%; border-color: var(--color-red);"></div>
+    <div class="geo-square" style="bottom: 15%; right: 8%; border-color: var(--color-yellow);"></div>
+    <div class="geo-line-horizontal" style="top: 30%; right: 0; width: 150px;"></div>
 
-        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-8">
-            <h2 class="font-semibold text-gray-800 mb-3">How to play</h2>
-            <ul class="text-left text-gray-600 text-sm space-y-2">
-                <li>• Find people who match the questions</li>
-                <li>• Tap a square when you find a match</li>
-                <li>• Get 5 in a row to win!</li>
-            </ul>
+    <div class="text-center max-w-2xl relative z-10 animate-reveal">
+        <!-- Main Title Block - Poster Style -->
+        <div class="relative mb-6">
+            <div class="absolute inset-0 bg-red" style="transform: translate(8px, 8px);"></div>
+            <div class="relative bg-black p-6 border-6 border-black">
+                <h1 class="heading-xl text-white tracking-wider mb-2">SOC OPS</h1>
+                <div class="text-yellow text-constructivist text-lg tracking-widest">SOCIAL BINGO</div>
+            </div>
         </div>
 
+        <!-- How to Play - Constructivist Info Blocks -->
+        <div class="mb-8 text-left">
+            <div class="bg-black text-yellow p-3 border-3 border-black mb-3">
+                <h2 class="text-constructivist text-sm tracking-wider font-bold">HOW TO PLAY</h2>
+            </div>
+            <div class="border-3 border-black">
+                <div class="p-4 bg-white border-b-3 border-black">
+                    <span class="text-constructivist text-black font-bold">01</span>
+                    <span class="ml-3 text-black">Find people who match the questions</span>
+                </div>
+                <div class="p-4 bg-red text-white border-b-3 border-black">
+                    <span class="text-constructivist text-yellow font-bold">02</span>
+                    <span class="ml-3">Tap a square when you find a match</span>
+                </div>
+                <div class="p-4 bg-yellow text-black">
+                    <span class="text-constructivist text-black font-bold">03</span>
+                    <span class="ml-3">Get 5 in a row to win!</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Button - Bold Constructivist -->
         <button
             @onclick="OnStart"
-            class="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg active:bg-accent-light transition-colors">
-            Start Game
+            class="w-full bg-red text-yellow font-bold py-4 px-8 text-constructivist text-xl tracking-wider border-6 border-black hover:translate-x-1 hover:-translate-y-1 transition-all relative group"
+            style="box-shadow: 6px 6px 0 var(--color-black);">
+            <span class="relative z-10">START GAME</span>
+            <div class="absolute inset-0 bg-black scale-x-0 group-hover:scale-x-100 transition-transform origin-left" style="transform: scaleX(0);"></div>
         </button>
     </div>
 </div>

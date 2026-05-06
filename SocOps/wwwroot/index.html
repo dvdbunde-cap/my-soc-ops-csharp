@@ -4,10 +4,13 @@
 <head>
 <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="theme-color" content="#CC0000" />
     <meta name="description" content="Social Bingo - Find people who match the questions!" />
-    <title>Soc Ops - Social Bingo</title>
+    <title>SOC OPS - SOCIAL BINGO</title>
     <base href="/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="preload" id="webassembly" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -17,11 +20,12 @@
 
 <body>
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="constructivist-loader">
+            <div class="loader-square loader-red"></div>
+            <div class="loader-square loader-black"></div>
+            <div class="loader-square loader-yellow"></div>
+            <div class="loader-text">SOC OPS</div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
