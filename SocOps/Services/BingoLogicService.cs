@@ -6,6 +6,8 @@ namespace SocOps.Services;
 public class BingoLogicService
 {
     private const int BOARD_SIZE = 5;
+    private const int TOTAL_SQUARES = 25;
+    private const int SCAVENGER_HUNT_COUNT = 24;
     private const int CENTER_INDEX = 12; // 5x5 grid, center is index 12 (row 2, col 2)
     private static readonly Random _random = new();
 
@@ -24,36 +26,37 @@ public class BingoLogicService
     }
 
     /// <summary>
+    /// Create a new BingoSquareData instance
+    /// </summary>
+    public static BingoSquareData CreateSquare(int id, string text, bool isMarked = false, bool isFreeSpace = false)
+    {
+        return new BingoSquareData
+        {
+            Id = id,
+            Text = text,
+            IsMarked = isMarked,
+            IsFreeSpace = isFreeSpace
+        };
+    }
+
+    /// <summary>
     /// Generate a new 5x5 bingo board
     /// </summary>
     public static List<BingoSquareData> GenerateBoard()
     {
-        var shuffledQuestions = ShuffleArray(Questions.QuestionsList).Take(24).ToList();
+        var shuffledQuestions = ShuffleArray(Questions.QuestionsList).Take(SCAVENGER_HUNT_COUNT).ToList();
         var board = new List<BingoSquareData>();
 
         int questionIndex = 0;
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < TOTAL_SQUARES; i++)
         {
             if (i == CENTER_INDEX)
             {
-                board.Add(new BingoSquareData
-                {
-                    Id = i,
-                    Text = Questions.FREE_SPACE,
-                    IsMarked = true,
-                    IsFreeSpace = true
-                });
+                board.Add(CreateSquare(i, Questions.FREE_SPACE, isMarked: true, isFreeSpace: true));
             }
             else
             {
-                board.Add(new BingoSquareData
-                {
-                    Id = i,
-                    Text = shuffledQuestions[questionIndex],
-                    IsMarked = false,
-                    IsFreeSpace = false
-                });
-                questionIndex++;
+                board.Add(CreateSquare(i, shuffledQuestions[questionIndex++]));
             }
         }
 
@@ -67,13 +70,7 @@ public class BingoLogicService
     {
         return board.Select(square =>
             square.Id == squareId && !square.IsFreeSpace
-                ? new BingoSquareData
-                {
-                    Id = square.Id,
-                    Text = square.Text,
-                    IsMarked = !square.IsMarked,
-                    IsFreeSpace = square.IsFreeSpace
-                }
+                ? CreateSquare(square.Id, square.Text, !square.IsMarked, square.IsFreeSpace)
                 : square
         ).ToList();
     }
@@ -88,40 +85,24 @@ public class BingoLogicService
         // Rows
         for (int row = 0; row < BOARD_SIZE; row++)
         {
-            var squares = new List<int>();
-            for (int col = 0; col < BOARD_SIZE; col++)
-            {
-                squares.Add(row * BOARD_SIZE + col);
-            }
+            var squares = Enumerable.Range(0, BOARD_SIZE)
+                .Select(col => row * BOARD_SIZE + col)
+                .ToList();
             lines.Add(new BingoLine { Type = "row", Index = row, Squares = squares });
         }
 
         // Columns
         for (int col = 0; col < BOARD_SIZE; col++)
         {
-            var squares = new List<int>();
-            for (int row = 0; row < BOARD_SIZE; row++)
-            {
-                squares.Add(row * BOARD_SIZE + col);
-            }
+            var squares = Enumerable.Range(0, BOARD_SIZE)
+                .Select(row => row * BOARD_SIZE + col)
+                .ToList();
             lines.Add(new BingoLine { Type = "column", Index = col, Squares = squares });
         }
 
-        // Diagonal (top-left to bottom-right)
-        lines.Add(new BingoLine
-        {
-            Type = "diagonal",
-            Index = 0,
-            Squares = new List<int> { 0, 6, 12, 18, 24 }
-        });
-
-        // Diagonal (top-right to bottom-left)
-        lines.Add(new BingoLine
-        {
-            Type = "diagonal",
-            Index = 1,
-            Squares = new List<int> { 4, 8, 12, 16, 20 }
-        });
+        // Diagonals
+        lines.Add(new BingoLine { Type = "diagonal", Index = 0, Squares = new List<int> { 0, 6, 12, 18, 24 } });
+        lines.Add(new BingoLine { Type = "diagonal", Index = 1, Squares = new List<int> { 4, 8, 12, 16, 20 } });
 
         return lines;
     }
@@ -160,18 +141,12 @@ public class BingoLogicService
     /// </summary>
     public static List<BingoSquareData> GenerateFlatList()
     {
-        var shuffledQuestions = ShuffleArray(Questions.QuestionsList).Take(24).ToList();
+        var shuffledQuestions = ShuffleArray(Questions.QuestionsList).Take(SCAVENGER_HUNT_COUNT).ToList();
         var list = new List<BingoSquareData>();
 
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < SCAVENGER_HUNT_COUNT; i++)
         {
-            list.Add(new BingoSquareData
-            {
-                Id = i,
-                Text = shuffledQuestions[i],
-                IsMarked = false,
-                IsFreeSpace = false
-            });
+            list.Add(CreateSquare(i, shuffledQuestions[i]));
         }
 
         return list;

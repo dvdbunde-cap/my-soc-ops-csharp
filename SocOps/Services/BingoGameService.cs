@@ -30,6 +30,15 @@ public class BingoGameService
         }
     }
 
+    private static List<BingoSquareData> ToggleItemInList(List<BingoSquareData> items, int itemId)
+    {
+        return items.Select(item =>
+            item.Id == itemId
+                ? BingoLogicService.CreateSquare(item.Id, item.Text, !item.IsMarked, item.IsFreeSpace)
+                : item
+        ).ToList();
+    }
+
     public bool IsScavengerHuntComplete => ScavengerHuntProgress >= SCAVENGER_HUNT_WIN_THRESHOLD;
 
     public event Action? OnStateChanged;
@@ -62,8 +71,7 @@ public class BingoGameService
         WinningLine = null;
         CurrentGameState = GameState.Playing;
         ShowBingoModal = false;
-        _ = SaveGameStateAsync(); // Fire and forget
-        NotifyStateChanged();
+        SaveStateAndNotify();
     }
 
     public void HandleSquareClick(int squareId)
@@ -85,28 +93,16 @@ public class BingoGameService
             }
         }
 
-        _ = SaveGameStateAsync(); // Fire and forget
-        NotifyStateChanged();
+        SaveStateAndNotify();
     }
 
     public void ToggleScavengerHuntItem(int itemId)
     {
         if (CurrentGameMode != GameMode.ScavengerHunt) return;
 
-        ScavengerHuntList = ScavengerHuntList.Select(item =>
-            item.Id == itemId
-                ? new BingoSquareData
-                {
-                    Id = item.Id,
-                    Text = item.Text,
-                    IsMarked = !item.IsMarked,
-                    IsFreeSpace = item.IsFreeSpace
-                }
-                : item
-        ).ToList();
+        ScavengerHuntList = ToggleItemInList(ScavengerHuntList, itemId);
 
-        _ = SaveGameStateAsync(); // Fire and forget
-        NotifyStateChanged();
+        SaveStateAndNotify();
     }
 
     public void ResetGame()
@@ -115,8 +111,7 @@ public class BingoGameService
         Board = new();
         WinningLine = null;
         ShowBingoModal = false;
-        _ = SaveGameStateAsync(); // Fire and forget
-        NotifyStateChanged();
+        SaveStateAndNotify();
     }
 
     public void DismissModal()
@@ -126,6 +121,12 @@ public class BingoGameService
     }
 
     private void NotifyStateChanged() => OnStateChanged?.Invoke();
+
+    private void SaveStateAndNotify()
+    {
+        _ = SaveGameStateAsync(); // Fire and forget
+        NotifyStateChanged();
+    }
 
     private async Task LoadGameStateAsync()
     {
@@ -139,8 +140,8 @@ public class BingoGameService
                 {
                     CurrentGameState = data.GameState;
                     CurrentGameMode = data.GameMode;
-                    Board = data.Board ?? new();
-                    ScavengerHuntList = data.ScavengerHuntList ?? new();
+                    Board = data.Board ?? [];
+                    ScavengerHuntList = data.ScavengerHuntList ?? [];
                     WinningLine = data.WinningLine;
                 }
             }
