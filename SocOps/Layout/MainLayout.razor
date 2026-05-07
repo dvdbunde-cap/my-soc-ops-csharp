@@ -1,5 +1,27 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="h-full">
-    @Body
+    <!-- Skip to content link for keyboard users -->
+    <a href="#main-content"
+       class="skip-link"
+       aria-label="Skip to main content">
+        Skip to main content
+    </a>
+
+    <!-- Live region for announcements (BINGO wins, card draws, etc.) -->
+    <div aria-live="polite"
+         aria-atomic="true"
+         class="sr-only"
+         id="announcements">
+        @AnnouncementText
+    </div>
+
+    <main id="main-content" class="h-full">
+        @Body
+    </main>
 </div>
+
+@code {
+    [Parameter]
+    public string? AnnouncementText { get; set; }
+}

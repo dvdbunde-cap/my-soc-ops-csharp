@@ -448,6 +448,90 @@ button:disabled {
 
     #blazor-error-ui .dismiss {
         cursor: pointer;
+}
+
+/* ============================================
+   ACCESSIBILITY - SKIP LINK & FOCUS STYLES
+   ============================================ */
+
+/* Skip to content link - hidden by default, visible on focus */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 9999;
+    padding: 0.75rem 1.5rem;
+    background: var(--gradient-primary);
+    color: white;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    box-shadow: var(--glass-shadow);
+    transition: top 0.3s var(--ease-glass);
+}
+
+.skip-link:focus {
+    top: 1rem;
+    outline: 3px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+}
+
+/* Screen reader only class */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Visible focus indicators for keyboard users */
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+    outline: 3px solid rgba(102, 126, 234, 0.8);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* Ensure disabled elements don't show focus */
+button:disabled:focus-visible {
+    outline: none;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+    .glass {
+        border: 1px solid ButtonText;
+    }
+
+    button:focus-visible {
+        outline: 2px solid Highlight;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-glow,
+    .animate-ripple,
+    .glass-pulse,
+    .hover-scale:hover {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+    }
+
+    .grid-fade > * {
+        opacity: 1;
+        animation: none !important;
+    }
+}
         position: absolute;
         right: 0.75rem;
         top: 0.5rem;

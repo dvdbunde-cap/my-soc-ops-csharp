@@ -6,7 +6,8 @@
     <header class="glass flex items-center justify-between p-3 rounded-none">
         <button
             @onclick="OnReset"
-            class="text-white text-sm px-4 py-2 rounded-md hover-scale transition-all font-medium">
+            class="text-white text-sm px-4 py-2 rounded-md hover-scale transition-all font-medium focus-visible:outline-none"
+            aria-label="Go back to start screen">
             ← BACK
         </button>
         <h1 class="heading-md text-white tracking-wide">CARD DECK</h1>
@@ -20,9 +21,9 @@
         </p>
     </div>
 
-    <!-- Deck Stats -->
+    <!-- Deck Stats with aria-live for updates -->
     <div class="px-4 mb-4">
-        <div class="glass rounded-lg p-4">
+        <div class="glass rounded-lg p-4" aria-live="polite" aria-atomic="true">
             <div class="flex justify-between items-center">
                 <span class="text-dark font-semibold">Cards Drawn</span>
                 <span class="text-gradient font-bold text-lg">@CardsDrawn / @TotalCards</span>
@@ -37,14 +38,16 @@
             {
                 <!-- Current Card - Glass Card with Animation -->
                 <div class="glass rounded-xl p-8 animate-fade-in cursor-pointer hover-scale transition-all"
-                     @onclick="OnCardClick">
+                     @onclick="OnCardClick"
+                     role="button"
+                     aria-label="Card: @CurrentCard.Text. Tap to mark if you found a match.">
                     <div class="text-center">
-                        <div class="text-6xl mb-4">🃏</div>
+                        <div class="text-6xl mb-4" aria-hidden="true">🃏</div>
                         <p class="text-dark text-lg font-medium leading-relaxed">@CurrentCard.Text</p>
 
                         @if (CurrentCard.IsMarked)
                         {
-                            <div class="mt-4 text-gradient font-bold text-lg animate-glow">
+                            <div class="mt-4 text-gradient font-bold text-lg animate-glow" role="status">
                                 ✓ MARKED
                             </div>
                         }
@@ -62,9 +65,10 @@
                 <!-- Draw Card Button -->
                 <button
                     @onclick="OnDrawCard"
-                    class="glass rounded-xl p-12 w-full hover-scale transition-all border-0">
+                    class="glass rounded-xl p-12 w-full hover-scale transition-all border-0 focus-visible:outline-none"
+                    aria-label="Draw a new card">
                     <div class="text-center">
-                        <div class="text-6xl mb-4">🎴</div>
+                        <div class="text-6xl mb-4" aria-hidden="true">🎴</div>
                         <span class="text-gradient font-bold text-xl">TAP TO DRAW</span>
                     </div>
                 </button>
@@ -72,8 +76,8 @@
             else
             {
                 <!-- Deck Empty -->
-                <div class="glass rounded-xl p-8 text-center animate-fade-in">
-                    <div class="text-6xl mb-4">🎉</div>
+                <div class="glass rounded-xl p-8 text-center animate-fade-in" role="status">
+                    <div class="text-6xl mb-4" aria-hidden="true">🎉</div>
                     <p class="text-gradient font-bold text-xl mb-2">DECK COMPLETE!</p>
                     <p class="text-dark font-light">You've gone through all the cards!</p>
                 </div>

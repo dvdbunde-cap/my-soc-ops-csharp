@@ -1,6 +1,8 @@
 @using SocOps.Models
 
-<div class="grid grid-cols-5 gap-3 w-full max-w-2xl mx-auto aspect-square grid-fade">
+<div class="grid grid-cols-5 gap-3 w-full max-w-2xl mx-auto aspect-square grid-fade"
+     role="grid"
+     aria-label="BINGO board - 5 by 5 grid of squares">
     @foreach (var square in Board)
     {
         <BingoSquare

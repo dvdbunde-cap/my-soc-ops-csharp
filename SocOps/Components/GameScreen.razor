@@ -5,7 +5,8 @@
     <header class="glass flex items-center justify-between p-3 rounded-none">
         <button
             @onclick="OnReset"
-            class="text-white text-sm px-4 py-2 rounded-md hover-scale transition-all font-medium">
+            class="text-white text-sm px-4 py-2 rounded-md hover-scale transition-all font-medium focus-visible:outline-none"
+            aria-label="Go back to start screen">
             ← BACK
         </button>
         <h1 class="heading-md text-white tracking-wide">SOC OPS</h1>
@@ -19,10 +20,12 @@
         </p>
     </div>
 
-    <!-- BINGO Alert - Glass Card with Glow -->
+    <!-- BINGO Alert - Glass Card with Glow (Live region for screen readers) -->
     @if (HasBingo)
     {
-        <div class="glass rounded-lg mx-4 py-4 text-center animate-glow border-0">
+        <div class="glass rounded-lg mx-4 py-4 text-center animate-glow border-0"
+             role="alert"
+             aria-live="assertive">
             <span class="text-gradient font-bold text-lg">★ BINGO! YOU GOT A LINE! ★</span>
         </div>
     }

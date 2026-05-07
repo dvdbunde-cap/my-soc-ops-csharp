@@ -1,8 +1,15 @@
 @using SocOps.Models
 
-<div @onclick="() => OnToggle.InvokeAsync(Square.Id)" class="@GetCssClass()" role="checkbox" aria-checked="@Square.IsMarked" tabindex="0" @onkeydown="HandleKeyDown">
+<div @onclick="() => OnToggle.InvokeAsync(Square.Id)"
+     @onkeydown="HandleKeyDown"
+     class="@GetCssClass()"
+     role="checkbox"
+     aria-checked="@Square.IsMarked.ToString().ToLower()"
+     aria-label="@GetAriaLabel()"
+     tabindex="0"
+     id="@($"scavenger-{Square.Id}")">
     <!-- Checkbox -->
-    <div class="checkbox-container">
+    <div class="checkbox-container" aria-hidden="true">
         @if (Square.IsMarked)
         {
             <span class="checkmark">✓</span>
@@ -11,6 +18,9 @@
 
     <!-- Question Text -->
     <span class="item-text">@Square.Text</span>
+
+    <!-- Screen reader announcement -->
+    <span class="sr-only">@(Square.IsMarked ? "Marked" : "Unmarked")</span>
 </div>
 
 @code {
@@ -22,8 +32,14 @@
 
     private string GetCssClass()
     {
-        var baseClass = "scavenger-item glass rounded-md p-4 flex items-center gap-4 mb-3 cursor-pointer transition-all hover-scale";
+        var baseClass = "scavenger-item glass rounded-md p-4 flex items-center gap-4 mb-3 cursor-pointer transition-all hover-scale focus-visible:outline-none";
         return Square.IsMarked ? baseClass + " bg-gradient-success text-white" : baseClass;
+    }
+
+    private string GetAriaLabel()
+    {
+        var baseText = Square.Text;
+        return Square.IsMarked ? $"{baseText} (marked)" : baseText;
     }
 
     private void HandleKeyDown(KeyboardEventArgs e)
