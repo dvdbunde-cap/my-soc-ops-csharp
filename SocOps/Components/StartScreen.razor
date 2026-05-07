@@ -1,12 +1,16 @@
 <div class="flex flex-col items-center justify-center min-h-full p-6 bg-white relative overflow-hidden">
-    <!-- Geometric decorations -->
-    <div class="geo-circle" style="top: 10%; left: 5%; border-color: var(--color-red);"></div>
-    <div class="geo-square" style="bottom: 15%; right: 8%; border-color: var(--color-yellow);"></div>
-    <div class="geo-line-horizontal" style="top: 30%; right: 0; width: 150px;"></div>
 
-    <div class="text-center max-w-2xl relative z-10 animate-reveal">
+    <!-- Geometric Decorations with Staggered Animations -->
+    <div class="geo-circle animate-reveal" style="top: 10%; left: 5%; border-color: var(--color-red); animation-delay: 0s;"></div>
+    <div class="geo-square animate-reveal" style="bottom: 15%; right: 8%; border-color: var(--color-yellow); animation-delay: 0.1s;"></div>
+    <div class="geo-line-horizontal animate-reveal" style="top: 30%; right: 0; width: 150px; animation-delay: 0.2s;"></div>
+    <div class="geo-line-vertical animate-reveal" style="top: 20%; left: 10%; height: 200px; animation-delay: 0.15s;"></div>
+    <div class="geo-circle animate-reveal" style="bottom: 25%; left: 15%; border-color: var(--color-black); width: 40px; height: 40px; animation-delay: 0.25s;"></div>
+    <div class="geo-square animate-reveal" style="top: 8%; right: 12%; border-color: var(--color-red); width: 30px; height: 30px; animation-delay: 0.3s;"></div>
+
+    <div class="text-center max-w-2xl relative z-10">
         <!-- Main Title Block - Poster Style -->
-        <div class="relative mb-6">
+        <div class="relative mb-6 animate-reveal" style="animation-delay: 0s;">
             <div class="absolute inset-0 bg-red" style="transform: translate(8px, 8px);"></div>
             <div class="relative bg-black p-6 border-6 border-black">
                 <h1 class="heading-xl text-white tracking-wider mb-2">SOC OPS</h1>
@@ -14,9 +18,15 @@
             </div>
         </div>
 
+        <!-- Mini Board Preview -->
+        <div class="mb-6 animate-reveal" style="animation-delay: 0.2s;">
+            <div class="text-constructivist text-xs tracking-wider text-black/60 mb-2">PREVIEW</div>
+            <MiniBingoBoard />
+        </div>
+
         <!-- How to Play - Constructivist Info Blocks -->
-        <div class="mb-8 text-left">
-            <div class="bg-black text-yellow p-3 border-3 border-black mb-3">
+        <div class="mb-8 text-left animate-reveal" style="animation-delay: 0.4s;">
+            <div class="bg-black text-yellow p-3 border-3 border-black mb-3 diagonal-stripes-yellow">
                 <h2 class="text-constructivist text-sm tracking-wider font-bold">HOW TO PLAY</h2>
             </div>
             <div class="border-3 border-black">
@@ -36,17 +46,23 @@
         </div>
 
         <!-- Start Button - Bold Constructivist -->
-        <button
-            @onclick="OnStart"
-            class="w-full bg-red text-yellow font-bold py-4 px-8 text-constructivist text-xl tracking-wider border-6 border-black hover:translate-x-1 hover:-translate-y-1 transition-all relative group"
-            style="box-shadow: 6px 6px 0 var(--color-black);">
-            <span class="relative z-10">START GAME</span>
-            <div class="absolute inset-0 bg-black scale-x-0 group-hover:scale-x-100 transition-transform origin-left" style="transform: scaleX(0);"></div>
-        </button>
+        <div class="animate-reveal" style="animation-delay: 0.6s;">
+            <button
+                @onclick="OnStart"
+                @onmouseover="@(() => isButtonHovered = true)"
+                @onmouseout="@(() => isButtonHovered = false)"
+                class="w-full bg-red text-yellow font-bold py-4 px-8 text-constructivist text-xl tracking-wider border-6 border-black hover:translate-x-1 hover:-translate-y-1 transition-all relative"
+                style="box-shadow: 6px 6px 0 var(--color-black);">
+                <span class="relative z-10">START GAME</span>
+                <div class="absolute inset-0 bg-black transition-transform origin-left @(isButtonHovered ? "scale-x-100" : "scale-x-0")"></div>
+            </button>
+        </div>
     </div>
 </div>
 
 @code {
     [Parameter]
     public EventCallback OnStart { get; set; }
+
+    private bool isButtonHovered = false;
 }

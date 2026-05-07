@@ -1,0 +1,23 @@
+@using SocOps.Data
+
+<div class="@GetCssClass()">
+    <div class="w-full h-full flex items-center justify-center p-0.5 overflow-hidden">
+        <span class="text-xs leading-tight wrap-break-word hyphens-auto text-center select-none">@Text</span>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Text { get; set; } = "";
+
+    [Parameter]
+    public bool IsFreeSpace { get; set; } = false;
+
+    private string GetCssClass()
+    {
+        var baseClass = "border-2 border-black aspect-square";
+        return IsFreeSpace
+            ? $"{baseClass} bg-yellow diagonal-stripes-yellow"
+            : $"{baseClass} bg-white";
+    }
+}

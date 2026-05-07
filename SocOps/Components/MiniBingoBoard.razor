@@ -1,0 +1,49 @@
+@using SocOps.Data
+
+<div class="grid grid-cols-5 gap-0 w-full max-w-md mx-auto border-6 border-black">
+    @foreach (var item in BoardItems)
+    {
+        <MiniBingoSquare Text="@item.Text" IsFreeSpace="@item.IsFreeSpace" />
+    }
+</div>
+
+@code {
+    private List<BoardItem> BoardItems { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        BoardItems = GenerateBoard();
+    }
+
+    private List<BoardItem> GenerateBoard()
+    {
+        var items = new List<BoardItem>();
+        var questions = Questions.QuestionsList.Take(24).ToList();
+        int questionIndex = 0;
+
+        for (int i = 0; i < 25; i++)
+        {
+            if (i == 12) // Center square (row 3, col 3 in 0-indexed)
+            {
+                items.Add(new BoardItem { Text = Questions.FREE_SPACE, IsFreeSpace = true });
+            }
+            else
+            {
+                items.Add(new BoardItem
+                {
+                    Text = questions[questionIndex],
+                    IsFreeSpace = false
+                });
+                questionIndex++;
+            }
+        }
+
+        return items;
+    }
+
+    private class BoardItem
+    {
+        public string Text { get; set; } = "";
+        public bool IsFreeSpace { get; set; }
+    }
+}
