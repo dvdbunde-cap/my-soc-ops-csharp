@@ -20,95 +20,96 @@ Soc Ops is a Blazor WebAssembly game built with .NET 10. Players mark bingo squa
 
 ## Design System
 
-### Bold Constructivist Style
+### Gradient Glass UI Style
 
-The UI follows a **Bold Constructivist** design inspired by Russian Constructivism (1919-1930s). Key characteristics:
-- Heavy geometric aesthetic with thick borders (2px-8px)
-- Primary color palette: red (`#CC0000`), black (`#000000`), white (`#FFFFFF`), yellow (`#FFCC00`)
-- Sharp corners (no rounded corners or minimal 2px radius)
-- Uppercase, condensed typography with wide letter spacing
-- Diagonal stripe patterns for emphasis
-- "Stamp" effects and bold, geometric animations
+The UI follows a **Gradient Glass UI** design featuring frosted glass morphism, vibrant gradient backgrounds, and translucent components. Key characteristics:
+- Glass morphism with `backdrop-filter: blur(10px)` and translucent backgrounds
+- Vibrant gradient backgrounds (purple-blue, pink-orange, teal-green)
+- Large border radius (12px-24px) for glass morphism feel
+- Modern, rounded typography (Poppins) with light weights
+- Soft shadows and glow effects for depth
+- Smooth, glowing transitions (scale, opacity, blur)
 
-### Color Palette
+### Gradient Palette
 
 ```css
---color-red: #CC0000;
---color-black: #000000;
---color-white: #FFFFFF;
---color-yellow: #FFCC00;
---color-blue: #0066CC;
+--gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+--gradient-warm: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+--gradient-cool: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+--gradient-success: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+--gradient-sunset: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
 ```
 
-**Semantic usage:**
-- Red: Accent, buttons, winning states, alerts
-- Black: Headers, borders, text
-- White: Backgrounds, text on dark
-- Yellow: Highlights, warnings, winning squares
+**Glass Effect Colors:**
+```css
+--glass-bg: rgba(255, 255, 255, 0.25);
+--glass-bg-light: rgba(255, 255, 255, 0.15);
+--glass-bg-dark: rgba(0, 0, 0, 0.2);
+--glass-border: rgba(255, 255, 255, 0.18);
+--glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+```
 
 ### Typography
 
-- **Headings**: Oswald (Google Fonts) — bold, condensed, uppercase
-- **Body**: PT Sans (Google Fonts) — clean, readable
-- Always use `text-constructivist` class for uppercase elements with letter spacing
-- Use `tracking-wide` (0.05em) or `tracking-wider` (0.1em) for constructivist text
+- **Primary**: Poppins (Google Fonts) — modern, rounded, glass-friendly
+- Use `text-gradient` class for gradient text effects
+- Use `text-light` (font-weight: 300) for subtle text
+- Use `font-medium` (500) or `font-semibold` (600) for emphasis.
 
 ### Component Styling Guidelines
 
-1. **Borders**: Use thick borders (`--border-standard: 3px`, `--border-thick: 6px`, `--border-heavy: 8px`)
-2. **Corners**: Use `rounded-none` or `rounded-sm` (2px max) — avoid rounded corners
-3. **Colors**: Stick to the primary palette — avoid gray tones
-4. **Text**: Uppercase for buttons, headings, labels; use `uppercase` and `tracking-wide` classes
-5. **Spacing**: Use larger spacing scale (`--space-md: 1rem`, `--space-lg: 1.5rem`, `--space-xl: 2rem`)
+1. **Glass Effect**: Use `glass`, `glass-light`, or `glass-dark` classes for frosted glass morphism
+2. **Corners**: Use `rounded-md` (12px), `rounded-lg` (16px), or `rounded-xl` (24px)
+3. **Colors**: Use gradient backgrounds (`bg-gradient-primary`, etc.) for vibrant visuals
+4. **Text**: Modern, rounded typography — avoid uppercase for body text
+5. **Spacing**: Use softer spacing scale (`p-3`, `p-4`, `p-6`, `p-8`)
 
 ### Component States
 
-- **Default squares**: White background, black border, black text
-- **Marked squares**: Red background (`#CC0000`), white text, white border
-- **Winning squares**: Yellow background (`#FFCC00`), black text, black border, stamp animation
-- **Free space**: White background with geometric diamond pattern, disabled state
+- **Default squares**: Frosted glass (`glass` class), blur effect, 12px radius
+- **Marked squares**: Gradient fill (warm gradient), white text, glow effect
+- **Winning squares**: Gradient fill (success gradient), pulse glow animation
+- **Free space**: Special glass effect with semi-transparent icon.
 
 ### Animations
 
-- **Stamp effect** (`animate-stamp`): Used for square clicks — scale + rotate animation (0.2s)
-- **Sweep** (`animate-sweep`): Used for BINGO win — horizontal slide animation (0.3s)
-- **Staggered reveal** (`.grid-reveal > *`): Used for grid load — sequential fade-in with delays
-- **Loader pulse** (`loader-pulse`): Used for loading animation — scale + opacity pulse
-- Always use `--ease-constructivist` timing function (`cubic-bezier(0.2, 0.8, 0.2, 1)`)
+- **Glow pulse** (`animate-glow`): Used for BINGO win — box-shadow glow animation (2s)
+- **Ripple effect** (`animate-ripple`): Used for square clicks — expanding circle with opacity fade
+- **Fade in** (`animate-fade-in`): Used for page load — scale + opacity animation (0.4s)
+- **Staggered fade** (`.grid-fade > *`): Used for grid load — sequential fade-in with delays
+- **Glass pulse** (`glass-pulse`): Used for loading animation — scale + glow pulse
+- Always use `--ease-glass` timing function (`cubic-bezier(0.4, 0, 0.2, 1)`)
 
-### Diagonal Stripes Pattern
+### Glass Morphism Utilities
 
-Use these utility classes for constructivist patterns:
-- `.diagonal-stripes-red`: Red/white 45° stripes
-- `.diagonal-stripes-yellow`: Yellow/black 45° stripes
-- `.diagonal-stripes-black`: Black/white 45° stripes
-
-### Geometric Decorations
-
-- `.geo-circle`: Circular decoration with thick border
-- `.geo-square`: Square decoration with standard border
-- `.geo-line-horizontal`: Horizontal heavy line
-- `.geo-line-vertical`: Vertical heavy line
+Use these utility classes for glass effects:
+- `.glass`: Standard glass morphism (white translucent, blur, border)
+- `.glass-light`: Lighter glass effect (less opacity)
+- `.glass-dark`: Dark glass effect for dark backgrounds
+- `.bg-gradient-primary`: Purple-to-blue gradient background
+- `.bg-gradient-warm`: Pink-to-orange gradient background
+- `.bg-gradient-cool`: Blue-to-teal gradient background
+- `.bg-gradient-success`: Green-to-teal gradient background.
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| `SocOps/wwwroot/css/app.css` | Full design system with tokens, utilities, and animations |
-| `SocOps/wwwroot/index.html` | Font imports (Oswald + PT Sans), theme-color, loading animation |
-| `SocOps/Components/StartScreen.razor` | Poster-style landing page with geometric blocks |
-| `SocOps/Components/GameScreen.razor` | Industrial game interface with black header |
-| `SocOps/Components/BingoBoard.razor` | Geometric grid with thick black borders |
-| `SocOps/Components/BingoSquare.razor` | Bold square states with stamp animation |
+| `SocOps/wwwroot/css/app.css` | Full glass morphism system with tokens, utilities, and animations |
+| `SocOps/wwwroot/index.html` | Font imports (Poppins), theme-color, glass loading animation |
+| `SocOps/Components/StartScreen.razor` | Glass card on gradient background |
+| `SocOps/Components/GameScreen.razor` | Glass header with blur, gradient background |
+| `SocOps/Components/BingoBoard.razor` | Glass container with gap, rounded corners |
+| `SocOps/Components/BingoSquare.razor` | Glass squares with gradients and blur |
 
 ### Design Principles
 
-1. **Bold over subtle**: Use high contrast, thick borders, large typography
-2. **Geometric over organic**: Prefer squares, circles, straight lines, diagonal patterns
-3. **Uppercase over lowercase**: Use uppercase for UI elements, headings, buttons
-4. **Sharp over rounded**: Avoid rounded corners, use sharp 90° angles
-5. **Limited palette**: Stick to red/black/white/yellow — avoid gradients or multiple colors
-6. **Motion with purpose**: Animations should feel like a "stamp" or "sweep" — bold and decisive
+1. **Glass over solid**: Use frosted glass morphism with backdrop blur
+2. **Gradients over flat**: Use vibrant gradient backgrounds for visual interest
+3. **Soft over bold**: Use smooth, glowing transitions (scale, opacity, blur)
+4. **Rounded over sharp**: Use large border radius (12px-24px) for glass morphism
+5. **Modern over condensed**: Use Poppins typography with light weights
+6. **Depth over flat**: Use layered shadows and glow effects for 3D depth.
 
 ## Commands
 

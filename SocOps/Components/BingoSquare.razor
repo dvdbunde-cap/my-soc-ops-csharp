@@ -1,20 +1,19 @@
-@using SocOps.Models
+@using SocOps.Models;
 
-<button
-    @onclick="OnClick"
-    disabled="@Square.IsFreeSpace"
-    class="@GetCssClasses()"
-    aria-pressed="@Square.IsMarked"
-    aria-label="@(Square.IsFreeSpace ? "Free space" : Square.Text)">
-    <span class="wrap-break-word hyphens-auto uppercase tracking-wide">@Square.Text</span>
+<button @onclick="OnClick"
+        disabled="@Square.IsFreeSpace"
+        class="@GetCssClasses()"
+        aria-pressed="@Square.IsMarked"
+        aria-label="@(Square.IsFreeSpace ? "Free space" : Square.Text)">
+    <span class="wrap-break-word hyphens-auto font-medium">@Square.Text</span>
     @if (Square.IsMarked && !Square.IsFreeSpace)
     {
-        <span class="absolute top-2 right-2 text-white text-xl font-bold" style="font-family: var(--font-heading);">✕</span>
+        <span class="absolute top-2 right-2 text-white text-lg font-bold">✕</span>
     }
     @if (Square.IsFreeSpace)
     {
-        <span class="absolute inset-0 flex items-center justify-center opacity-20">
-            <div class="w-8 h-8 border-3 border-black rounded-none" style="transform: rotate(45deg);"></div>
+        <span class="absolute inset-0 flex items-center justify-center opacity-30">
+            <div class="w-6 h-6 rounded-full border-2 border-current"></div>
         </span>
     }
 </button>
@@ -31,15 +30,15 @@
 
     private string GetCssClasses()
     {
-        var baseClasses = "relative flex items-center justify-center p-2 text-center border-3 select-none min-h-[60px] text-xs leading-tight rounded-none uppercase font-bold transition-all duration-100";
+        var baseClasses = "relative flex items-center justify-center p-3 text-center select-none min-h-[60px] text-xs leading-tight rounded-lg font-medium transition-all hover-scale";
 
         var stateClasses = Square.IsMarked
             ? IsWinning
-                ? "bg-yellow text-black border-black animate-stamp"
-                : "bg-red text-white border-white"
-            : "bg-white text-black border-black active:bg-gray-100";
+                ? "bg-gradient-success text-white animate-glow"
+                : "bg-gradient-warm text-white shadow-lg"
+            : "glass text-dark border-0";
 
-        var freeSpaceClasses = Square.IsFreeSpace ? "font-bold cursor-default opacity-90" : "hover:translate-x-0.5 hover:-translate-y-0.5";
+        var freeSpaceClasses = Square.IsFreeSpace ? "cursor-default opacity-90" : "";
 
         return $"{baseClasses} {stateClasses} {freeSpaceClasses}";
     }

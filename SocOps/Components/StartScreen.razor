@@ -1,68 +1,44 @@
-<div class="flex flex-col items-center justify-center min-h-full p-6 bg-white relative overflow-hidden">
+<div class="flex flex-col items-center justify-center min-h-full p-6 bg-gradient-primary relative overflow-hidden">
 
-    <!-- Geometric Decorations with Staggered Animations -->
-    <div class="geo-circle animate-reveal" style="top: 10%; left: 5%; border-color: var(--color-red); animation-delay: 0s;"></div>
-    <div class="geo-square animate-reveal" style="bottom: 15%; right: 8%; border-color: var(--color-yellow); animation-delay: 0.1s;"></div>
-    <div class="geo-line-horizontal animate-reveal" style="top: 30%; right: 0; width: 150px; animation-delay: 0.2s;"></div>
-    <div class="geo-line-vertical animate-reveal" style="top: 20%; left: 10%; height: 200px; animation-delay: 0.15s;"></div>
-    <div class="geo-circle animate-reveal" style="bottom: 25%; left: 15%; border-color: var(--color-black); width: 40px; height: 40px; animation-delay: 0.25s;"></div>
-    <div class="geo-square animate-reveal" style="top: 8%; right: 12%; border-color: var(--color-red); width: 30px; height: 30px; animation-delay: 0.3s;"></div>
-
-    <div class="text-center max-w-2xl relative z-10">
-        <!-- Main Title Block - Poster Style -->
-        <div class="relative mb-6 animate-reveal" style="animation-delay: 0s;">
-            <div class="absolute inset-0 bg-red" style="transform: translate(8px, 8px);"></div>
-            <div class="relative bg-black p-6 border-6 border-black">
-                <h1 class="heading-xl text-white tracking-wider mb-2">SOC OPS</h1>
-                <div class="text-yellow text-constructivist text-lg tracking-widest">SOCIAL BINGO</div>
-            </div>
+    <!-- Glass Card Container -->
+    <div class="glass rounded-xl p-8 max-w-2xl w-full mx-auto animate-fade-in relative z-10">
+        <!-- Main Title -->
+        <div class="text-center mb-8">
+            <h1 class="heading-xl mb-3">SOC OPS</h1>
+            <div class="text-gradient text-lg font-medium tracking-wide">SOCIAL BINGO</div>
         </div>
 
-        <!-- Mini Board Preview -->
-        <div class="mb-6 animate-reveal" style="animation-delay: 0.2s;">
-            <div class="text-constructivist text-xs tracking-wider text-black/60 mb-2">PREVIEW</div>
-            <MiniBingoBoard />
-        </div>
-
-        <!-- How to Play - Constructivist Info Blocks -->
-        <div class="mb-8 text-left animate-reveal" style="animation-delay: 0.4s;">
-            <div class="bg-black text-yellow p-3 border-3 border-black mb-3 diagonal-stripes-yellow">
-                <h2 class="text-constructivist text-sm tracking-wider font-bold">HOW TO PLAY</h2>
+        <!-- How to Play - Glass Blocks -->
+        <div class="mb-8 text-left">
+            <div class="glass rounded-md p-3 mb-4 border-0">
+                <h2 class="text-dark text-sm font-semibold tracking-wide uppercase">How to Play</h2>
             </div>
-            <div class="border-3 border-black">
-                <div class="p-4 bg-white border-b-3 border-black">
-                    <span class="text-constructivist text-black font-bold">01</span>
-                    <span class="ml-3 text-black">Find people who match the questions</span>
+            <div class="space-y-3">
+                <div class="glass rounded-md p-4 flex items-center gap-3">
+                    <span class="text-gradient font-bold text-lg">01</span>
+                    <span class="text-dark">Find people who match the questions</span>
                 </div>
-                <div class="p-4 bg-red text-white border-b-3 border-black">
-                    <span class="text-constructivist text-yellow font-bold">02</span>
-                    <span class="ml-3">Tap a square when you find a match</span>
+                <div class="glass rounded-md p-4 flex items-center gap-3">
+                    <span class="text-gradient font-bold text-lg">02</span>
+                    <span class="text-dark">Tap a square when you find a match</span>
                 </div>
-                <div class="p-4 bg-yellow text-black">
-                    <span class="text-constructivist text-black font-bold">03</span>
-                    <span class="ml-3">Get 5 in a row to win!</span>
+                <div class="glass rounded-md p-4 flex items-center gap-3">
+                    <span class="text-gradient font-bold text-lg">03</span>
+                    <span class="text-dark">Get 5 in a row to win!</span>
                 </div>
             </div>
         </div>
 
-        <!-- Start Button - Bold Constructivist -->
-        <div class="animate-reveal" style="animation-delay: 0.6s;">
-            <button
-                @onclick="OnStart"
-                @onmouseover="@(() => isButtonHovered = true)"
-                @onmouseout="@(() => isButtonHovered = false)"
-                class="w-full bg-red text-yellow font-bold py-4 px-8 text-constructivist text-xl tracking-wider border-6 border-black hover:translate-x-1 hover:-translate-y-1 transition-all relative"
-                style="box-shadow: 6px 6px 0 var(--color-black);">
-                <span class="relative z-10">START GAME</span>
-                <div class="absolute inset-0 bg-black transition-transform origin-left @(isButtonHovered ? "scale-x-100" : "scale-x-0")"></div>
-            </button>
-        </div>
+        <!-- Start Button - Gradient with Glass Effect -->
+        <button
+            @onclick="OnStart"
+            class="w-full bg-gradient-primary text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
+            <span class="relative z-10">START GAME</span>
+        </button>
     </div>
 </div>
 
 @code {
     [Parameter]
     public EventCallback OnStart { get; set; }
-
-    private bool isButtonHovered = false;
 }

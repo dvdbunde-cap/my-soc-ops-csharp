@@ -1,34 +1,35 @@
 @using SocOps.Models
 
-<div class="flex flex-col min-h-full bg-white">
-    <!-- Header - Industrial Black Bar -->
-    <header class="flex items-center justify-between p-3 bg-black text-white border-b-6 border-red">
+<div class="flex flex-col min-h-full bg-gradient-warm">
+    <!-- Glass Header -->
+    <header class="glass flex items-center justify-between p-3 rounded-none">
         <button
             @onclick="OnReset"
-            class="text-white text-sm px-3 py-2 uppercase tracking-wide hover:translate-x-1 transition-all"
-            style="font-family: var(--font-heading);">
+            class="text-white text-sm px-4 py-2 rounded-md hover-scale transition-all font-medium">
             ← BACK
         </button>
-        <h1 class="heading-md text-yellow tracking-wider">SOC OPS</h1>
+        <h1 class="heading-md text-white tracking-wide">SOC OPS</h1>
         <div class="w-16"></div>
     </header>
 
-    <!-- Instructions - Bold & Uppercase -->
-    <p class="text-center text-black text-sm py-3 px-4 uppercase tracking-wide font-bold bg-yellow border-b-3 border-black">
-        Tap a square when you find someone who matches it
-    </p>
+    <!-- Instructions - Glass Pill -->
+    <div class="flex justify-center py-3 px-4">
+        <p class="glass text-dark text-sm py-2 px-6 rounded-full text-center font-light">
+            Tap a square when you find someone who matches it
+        </p>
+    </div>
 
-    <!-- BINGO Alert - Diagonal Stripes -->
+    <!-- BINGO Alert - Glass Card with Glow -->
     @if (HasBingo)
     {
-        <div class="diagonal-stripes-red text-white text-center py-3 font-bold text-lg uppercase tracking-wider animate-sweep border-b-6 border-black">
-            <span class="relative z-10">★ BINGO! YOU GOT A LINE! ★</span>
+        <div class="glass rounded-lg mx-4 py-4 text-center animate-glow border-0">
+            <span class="text-gradient font-bold text-lg">★ BINGO! YOU GOT A LINE! ★</span>
         </div>
     }
 
-    <!-- Board Container -->
+    <!-- Board Container - Glass -->
     <div class="flex-1 flex items-center justify-center p-4">
-        <div class="border-6 border-black p-2 bg-white" style="box-shadow: 8px 8px 0 var(--color-black);">
+        <div class="glass rounded-xl p-3">
             <BingoBoard
                 Board="@Board"
                 WinningSquareIds="@WinningSquareIds"
