@@ -153,4 +153,27 @@ public class BingoLogicService
         if (line == null) return new HashSet<int>();
         return new HashSet<int>(line.Squares);
     }
+
+    /// <summary>
+    /// Generate a flat list of 24 shuffled questions (no free space, no grid)
+    /// Used for Scavenger Hunt mode
+    /// </summary>
+    public static List<BingoSquareData> GenerateFlatList()
+    {
+        var shuffledQuestions = ShuffleArray(Questions.QuestionsList).Take(24).ToList();
+        var list = new List<BingoSquareData>();
+
+        for (int i = 0; i < 24; i++)
+        {
+            list.Add(new BingoSquareData
+            {
+                Id = i,
+                Text = shuffledQuestions[i],
+                IsMarked = false,
+                IsFreeSpace = false
+            });
+        }
+
+        return list;
+    }
 }

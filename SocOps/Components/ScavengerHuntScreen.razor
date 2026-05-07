@@ -1,0 +1,86 @@
+@using SocOps.Models
+
+<div class="flex flex-col min-h-full bg-gradient-cool">
+    <!-- Glass Header -->
+    <header class="glass flex items-center justify-between p-3 rounded-none">
+        <button
+            @onclick="OnReset"
+            class="text-white text-sm px-4 py-2 rounded-md hover-scale transition-all font-medium">
+            ← BACK
+        </button>
+        <h1 class="heading-md text-white tracking-wide">SCAVENGER HUNT</h1>
+        <div class="w-16"></div>
+    </header>
+
+    <!-- Instructions - Glass Pill -->
+    <div class="flex justify-center py-3 px-4">
+        <p class="glass text-dark text-sm py-2 px-6 rounded-full text-center font-light">
+            Check off each person you find
+        </p>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="px-4 mb-4">
+        <div class="glass rounded-lg p-4">
+            <!-- Progress Stats -->
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-dark font-semibold">Progress</span>
+                <span class="text-dark font-bold">@GetProgressText()</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: @(Progress * 100)%"></div>
+                <span class="progress-text">@($"{Progress:P0}")</span>
+            </div>
+
+            <!-- Completion Message -->
+            @if (IsComplete)
+            {
+                <div class="mt-3 text-center animate-glow">
+                    <span class="text-gradient font-bold text-lg">🎉 You've found @GetMarkedCount() of @Items.Count questions! 🎉</span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Checklist Section -->
+    <div class="flex-1 overflow-y-auto px-4 pb-4">
+        <div class="space-y-3">
+            @foreach (var item in Items)
+            {
+                <ScavengerHuntItem
+                    Square="@item"
+                    OnToggle="@(() => OnToggle.InvokeAsync(item.Id))" />
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<BingoSquareData> Items { get; set; } = new();
+
+    [Parameter]
+    public double Progress { get; set; }
+
+    [Parameter]
+    public bool IsComplete { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnToggle { get; set; }
+
+    [Parameter]
+    public EventCallback OnReset { get; set; }
+
+    private string GetProgressText()
+    {
+        var marked = Items.Count(i => i.IsMarked);
+        return $"{marked}/{Items.Count} found";
+    }
+
+    private int GetMarkedCount()
+    {
+        return Items.Count(i => i.IsMarked);
+    }
+}

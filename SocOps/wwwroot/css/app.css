@@ -475,3 +475,95 @@ button:disabled {
     .blazor-error-boundary::after {
         content: "An error has occurred.";
     }
+
+/* ============================================
+   SCAVENGER HUNT - PROGRESS BAR & ITEMS
+   ============================================ */
+
+/* Progress Bar Container */
+.progress-bar-container {
+    position: relative;
+    height: 24px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-md);
+    -webkit-backdrop-filter: var(--blur-md);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+}
+
+/* Progress Bar Fill */
+.progress-bar-fill {
+    height: 100%;
+    background: var(--gradient-success);
+    border-radius: var(--radius-lg);
+    transition: width 0.3s var(--ease-glass);
+    position: relative;
+}
+
+/* Progress Text Overlay */
+.progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    z-index: 1;
+}
+
+/* Scavenger Hunt Item */
+.scavenger-item {
+    transition: all 0.3s var(--ease-glass);
+}
+
+.scavenger-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Checkbox Container */
+.checkbox-container {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s var(--ease-glass);
+    background: var(--glass-bg-light);
+}
+
+.scavenger-item.bg-gradient-success .checkbox-container {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Checkmark */
+.checkmark {
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Item Text */
+.item-text {
+    flex: 1;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.scavenger-item.bg-gradient-success .item-text {
+    color: white;
+    font-weight: 500;
+}
+
+.scavenger-item:not(.bg-gradient-success) .item-text {
+    color: var(--text-primary);
+}

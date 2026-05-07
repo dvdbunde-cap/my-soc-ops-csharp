@@ -7,15 +7,30 @@ namespace SocOps.Services;
 public class BingoGameService
 {
     private const string STORAGE_KEY = "bingo-game-state";
-    private const int STORAGE_VERSION = 1;
+    private const int STORAGE_VERSION = 2;
+    private const double SCAVENGER_HUNT_WIN_THRESHOLD = 0.80;
 
     private readonly IJSRuntime _jsRuntime;
 
     public GameState CurrentGameState { get; private set; } = GameState.Start;
+    public GameMode CurrentGameMode { get; private set; } = GameMode.Bingo;
     public List<BingoSquareData> Board { get; private set; } = new();
+    public List<BingoSquareData> ScavengerHuntList { get; private set; } = new();
     public BingoLine? WinningLine { get; private set; }
     public HashSet<int> WinningSquareIds => BingoLogicService.GetWinningSquareIds(WinningLine);
     public bool ShowBingoModal { get; private set; }
+
+    public double ScavengerHuntProgress
+    {
+        get
+        {
+            if (ScavengerHuntList.Count == 0) return 0.0;
+            var markedCount = ScavengerHuntList.Count(s => s.IsMarked);
+            return (double)markedCount / ScavengerHuntList.Count;
+        }
+    }
+
+    public bool IsScavengerHuntComplete => ScavengerHuntProgress >= SCAVENGER_HUNT_WIN_THRESHOLD;
 
     public event Action? OnStateChanged;
 
@@ -29,9 +44,21 @@ public class BingoGameService
         await LoadGameStateAsync().ConfigureAwait(false);
     }
 
-    public void StartGame()
+    public void StartGame(GameMode mode = GameMode.Bingo)
     {
-        Board = BingoLogicService.GenerateBoard();
+        CurrentGameMode = mode;
+
+        if (mode == GameMode.Bingo)
+        {
+            Board = BingoLogicService.GenerateBoard();
+            ScavengerHuntList = new();
+        }
+        else
+        {
+            ScavengerHuntList = BingoLogicService.GenerateFlatList();
+            Board = new();
+        }
+
         WinningLine = null;
         CurrentGameState = GameState.Playing;
         ShowBingoModal = false;
@@ -41,19 +68,42 @@ public class BingoGameService
 
     public void HandleSquareClick(int squareId)
     {
-        Board = BingoLogicService.ToggleSquare(Board, squareId);
-
-        // Check for bingo after toggling
-        if (WinningLine == null)
+        if (CurrentGameMode == GameMode.Bingo)
         {
-            var bingo = BingoLogicService.CheckBingo(Board);
-            if (bingo != null)
+            Board = BingoLogicService.ToggleSquare(Board, squareId);
+
+            // Check for bingo after toggling
+            if (WinningLine == null)
             {
-                WinningLine = bingo;
-                CurrentGameState = GameState.Bingo;
-                ShowBingoModal = true;
+                var bingo = BingoLogicService.CheckBingo(Board);
+                if (bingo != null)
+                {
+                    WinningLine = bingo;
+                    CurrentGameState = GameState.Bingo;
+                    ShowBingoModal = true;
+                }
             }
         }
+
+        _ = SaveGameStateAsync(); // Fire and forget
+        NotifyStateChanged();
+    }
+
+    public void ToggleScavengerHuntItem(int itemId)
+    {
+        if (CurrentGameMode != GameMode.ScavengerHunt) return;
+
+        ScavengerHuntList = ScavengerHuntList.Select(item =>
+            item.Id == itemId
+                ? new BingoSquareData
+                {
+                    Id = item.Id,
+                    Text = item.Text,
+                    IsMarked = !item.IsMarked,
+                    IsFreeSpace = item.IsFreeSpace
+                }
+                : item
+        ).ToList();
 
         _ = SaveGameStateAsync(); // Fire and forget
         NotifyStateChanged();
@@ -88,7 +138,9 @@ public class BingoGameService
                 if (data != null && data.Version == STORAGE_VERSION)
                 {
                     CurrentGameState = data.GameState;
-                    Board = data.Board;
+                    CurrentGameMode = data.GameMode;
+                    Board = data.Board ?? new();
+                    ScavengerHuntList = data.ScavengerHuntList ?? new();
                     WinningLine = data.WinningLine;
                 }
             }
@@ -107,7 +159,9 @@ public class BingoGameService
             {
                 Version = STORAGE_VERSION,
                 GameState = CurrentGameState,
+                GameMode = CurrentGameMode,
                 Board = Board,
+                ScavengerHuntList = ScavengerHuntList,
                 WinningLine = WinningLine
             };
             var json = JsonSerializer.Serialize(data);
@@ -123,7 +177,9 @@ public class BingoGameService
     {
         public int Version { get; set; }
         public GameState GameState { get; set; }
+        public GameMode GameMode { get; set; } = GameMode.Bingo;
         public List<BingoSquareData> Board { get; set; } = new();
+        public List<BingoSquareData> ScavengerHuntList { get; set; } = new();
         public BingoLine? WinningLine { get; set; }
     }
 }

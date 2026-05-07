@@ -1,0 +1,36 @@
+@using SocOps.Models
+
+<div @onclick="() => OnToggle.InvokeAsync(Square.Id)" class="@GetCssClass()" role="checkbox" aria-checked="@Square.IsMarked" tabindex="0" @onkeydown="HandleKeyDown">
+    <!-- Checkbox -->
+    <div class="checkbox-container">
+        @if (Square.IsMarked)
+        {
+            <span class="checkmark">✓</span>
+        }
+    </div>
+
+    <!-- Question Text -->
+    <span class="item-text">@Square.Text</span>
+</div>
+
+@code {
+    [Parameter]
+    public BingoSquareData Square { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<int> OnToggle { get; set; }
+
+    private string GetCssClass()
+    {
+        var baseClass = "scavenger-item glass rounded-md p-4 flex items-center gap-4 mb-3 cursor-pointer transition-all hover-scale";
+        return Square.IsMarked ? baseClass + " bg-gradient-success text-white" : baseClass;
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" || e.Key == " ")
+        {
+            OnToggle.InvokeAsync(Square.Id);
+        }
+    }
+}

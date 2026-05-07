@@ -29,16 +29,24 @@
             </div>
         </div>
 
-        <!-- Start Button - Gradient with Glass Effect -->
-        <button
-            @onclick="OnStart"
-            class="w-full bg-gradient-primary text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
-            <span class="relative z-10">START GAME</span>
-        </button>
+        <!-- Mode Selection Buttons -->
+        <div class="space-y-4">
+            <button
+                @onclick="() => OnStart.InvokeAsync(GameMode.Bingo)"
+                class="w-full bg-gradient-primary text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
+                <span class="relative z-10">🎯 BINGO</span>
+            </button>
+
+            <button
+                @onclick="() => OnStart.InvokeAsync(GameMode.ScavengerHunt)"
+                class="w-full bg-gradient-success text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
+                <span class="relative z-10">🔍 SCAVENGER HUNT</span>
+            </button>
+        </div>
     </div>
 </div>
 
 @code {
     [Parameter]
-    public EventCallback OnStart { get; set; }
+    public EventCallback<GameMode> OnStart { get; set; }
 }

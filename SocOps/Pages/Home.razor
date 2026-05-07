@@ -8,9 +8,9 @@
 
 @if (GameService.CurrentGameState == GameState.Start)
 {
-    <StartScreen OnStart="@GameService.StartGame" />
+    <StartScreen OnStart="@(mode => GameService.StartGame(mode))" />
 }
-else
+else if (GameService.CurrentGameMode == GameMode.Bingo)
 {
     <GameScreen
         Board="@GameService.Board"
@@ -23,6 +23,15 @@ else
     {
         <BingoModal OnDismiss="@GameService.DismissModal" />
     }
+}
+else if (GameService.CurrentGameMode == GameMode.ScavengerHunt)
+{
+    <ScavengerHuntScreen
+        Items="@GameService.ScavengerHuntList"
+        Progress="@GameService.ScavengerHuntProgress"
+        IsComplete="@GameService.IsScavengerHuntComplete"
+        OnToggle="@GameService.ToggleScavengerHuntItem"
+        OnReset="@GameService.ResetGame" />
 }
 
 @code {
