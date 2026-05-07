@@ -2,13 +2,14 @@
 @using SocOps.Models
 @using SocOps.Services
 @inject BingoGameService GameService
+@inject CardDeckService CardDeck
 @implements IDisposable
 
 <PageTitle>Soc Ops - Social Bingo</PageTitle>
 
 @if (GameService.CurrentGameState == GameState.Start)
 {
-    <StartScreen OnStart="@(mode => GameService.StartGame(mode))" />
+    <StartScreen OnStart="@HandleStart" />
 }
 else if (GameService.CurrentGameMode == GameMode.Bingo)
 {
@@ -33,16 +34,45 @@ else if (GameService.CurrentGameMode == GameMode.ScavengerHunt)
         OnToggle="@GameService.ToggleScavengerHuntItem"
         OnReset="@GameService.ResetGame" />
 }
+else if (GameService.CurrentGameMode == GameMode.CardDeckShuffle)
+{
+    <CardDeckScreen
+        CurrentCard="@CardDeck.CurrentCard"
+        CardsDrawn="@CardDeck.CardsDrawn"
+        TotalCards="@CardDeck.TotalCards"
+        HasMoreCards="@CardDeck.HasMoreCards"
+        OnDrawCard="@(() => CardDeck.DrawCard())"
+        OnCardClick="@(() => CardDeck.MarkCurrentCard())"
+        OnReset="@HandleReset"
+        OnResetDeck="@(() => CardDeck.ResetDeck())" />
+}
 
 @code {
     protected override async Task OnInitializedAsync()
     {
         await GameService.InitializeAsync();
         GameService.OnStateChanged += StateHasChanged;
+        CardDeck.OnStateChanged += StateHasChanged;
+    }
+
+    private void HandleStart(GameMode mode)
+    {
+        GameService.StartGame(mode);
+        if (mode == GameMode.CardDeckShuffle)
+        {
+            CardDeck.InitializeDeck();
+        }
+    }
+
+    private void HandleReset()
+    {
+        GameService.ResetGame();
+        CardDeck.ResetDeck();
     }
 
     public void Dispose()
     {
         GameService.OnStateChanged -= StateHasChanged;
+        CardDeck.OnStateChanged -= StateHasChanged;
     }
 }

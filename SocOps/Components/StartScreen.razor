@@ -42,6 +42,12 @@
                 class="w-full bg-gradient-success text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
                 <span class="relative z-10">🔍 SCAVENGER HUNT</span>
             </button>
+
+            <button
+                @onclick="() => OnStart.InvokeAsync(GameMode.CardDeckShuffle)"
+                class="w-full bg-gradient-sunset text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
+                <span class="relative z-10">🃏 CARD DECK SHUFFLE</span>
+            </button>
         </div>
     </div>
 </div>

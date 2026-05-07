@@ -62,10 +62,15 @@ public class BingoGameService
             Board = BingoLogicService.GenerateBoard();
             ScavengerHuntList = new();
         }
-        else
+        else if (mode == GameMode.ScavengerHunt)
         {
             ScavengerHuntList = BingoLogicService.GenerateFlatList();
             Board = new();
+        }
+        else if (mode == GameMode.CardDeckShuffle)
+        {
+            Board = new();
+            ScavengerHuntList = new();
         }
 
         WinningLine = null;

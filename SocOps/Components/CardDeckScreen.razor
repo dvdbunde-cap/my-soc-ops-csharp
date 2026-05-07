@@ -1,0 +1,133 @@
+@using SocOps.Models
+@using SocOps.Services
+
+<div class="flex flex-col min-h-full bg-gradient-sunset">
+    <!-- Glass Header -->
+    <header class="glass flex items-center justify-between p-3 rounded-none">
+        <button
+            @onclick="OnReset"
+            class="text-white text-sm px-4 py-2 rounded-md hover-scale transition-all font-medium">
+            ← BACK
+        </button>
+        <h1 class="heading-md text-white tracking-wide">CARD DECK</h1>
+        <div class="w-16"></div>
+    </header>
+
+    <!-- Instructions - Glass Pill -->
+    <div class="flex justify-center py-3 px-4">
+        <p class="glass text-dark text-sm py-2 px-6 rounded-full text-center font-light">
+            Tap to draw a card, then mark it if you find a match
+        </p>
+    </div>
+
+    <!-- Deck Stats -->
+    <div class="px-4 mb-4">
+        <div class="glass rounded-lg p-4">
+            <div class="flex justify-between items-center">
+                <span class="text-dark font-semibold">Cards Drawn</span>
+                <span class="text-gradient font-bold text-lg">@CardsDrawn / @TotalCards</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Area -->
+    <div class="flex-1 flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            @if (CurrentCard != null)
+            {
+                <!-- Current Card - Glass Card with Animation -->
+                <div class="glass rounded-xl p-8 animate-fade-in cursor-pointer hover-scale transition-all"
+                     @onclick="OnCardClick">
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">🃏</div>
+                        <p class="text-dark text-lg font-medium leading-relaxed">@CurrentCard.Text</p>
+
+                        @if (CurrentCard.IsMarked)
+                        {
+                            <div class="mt-4 text-gradient font-bold text-lg animate-glow">
+                                ✓ MARKED
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mt-4 text-dark text-sm font-light">
+                                Tap to mark if you found a match
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else if (HasMoreCards)
+            {
+                <!-- Draw Card Button -->
+                <button
+                    @onclick="OnDrawCard"
+                    class="glass rounded-xl p-12 w-full hover-scale transition-all border-0">
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">🎴</div>
+                        <span class="text-gradient font-bold text-xl">TAP TO DRAW</span>
+                    </div>
+                </button>
+            }
+            else
+            {
+                <!-- Deck Empty -->
+                <div class="glass rounded-xl p-8 text-center animate-fade-in">
+                    <div class="text-6xl mb-4">🎉</div>
+                    <p class="text-gradient font-bold text-xl mb-2">DECK COMPLETE!</p>
+                    <p class="text-dark font-light">You've gone through all the cards!</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Draw Next Card Button (when card is marked) -->
+    @if (CurrentCard != null && CurrentCard.IsMarked && HasMoreCards)
+    {
+        <div class="p-4">
+            <button
+                @onclick="OnDrawCard"
+                class="w-full bg-gradient-primary text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
+                <span class="relative z-10">🎴 DRAW NEXT CARD</span>
+            </button>
+        </div>
+    }
+
+    <!-- Reset Deck Button -->
+    @if (!HasMoreCards && CurrentCard == null)
+    {
+        <div class="p-4">
+            <button
+                @onclick="OnResetDeck"
+                class="w-full bg-gradient-warm text-white font-semibold py-4 px-8 text-lg rounded-lg hover-scale transition-all relative overflow-hidden border-0">
+                <span class="relative z-10">🔄 NEW DECK</span>
+            </button>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public BingoSquareData? CurrentCard { get; set; }
+
+    [Parameter]
+    public int CardsDrawn { get; set; }
+
+    [Parameter]
+    public int TotalCards { get; set; }
+
+    [Parameter]
+    public bool HasMoreCards { get; set; }
+
+    [Parameter]
+    public EventCallback OnDrawCard { get; set; }
+
+    [Parameter]
+    public EventCallback OnCardClick { get; set; }
+
+    [Parameter]
+    public EventCallback OnReset { get; set; }
+
+    [Parameter]
+    public EventCallback OnResetDeck { get; set; }
+}
